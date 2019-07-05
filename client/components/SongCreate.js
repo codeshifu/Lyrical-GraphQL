@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import gql from "graphql-tag";
+import { graphql } from "react-apollo";
+import { withRouter } from "react-router";
 
 class SongCreate extends Component {
   constructor(props) {
@@ -15,11 +18,23 @@ class SongCreate extends Component {
     this.setState({ [name]: value });
   }
 
+  handleSubmit(e) {
+    e.preventDefault();
+    const { title } = this.state;
+    this.props.mutate({
+      variables: {
+        title
+      }
+    });
+
+    this.props.router.push('/')
+  }
+
   render() {
     return (
       <div>
         <h2>Create new song</h2>
-        <form>
+        <form onSubmit={this.handleSubmit.bind(this)}>
           <label htmlFor="title">Title</label>
           <input
             autoFocus
@@ -35,4 +50,13 @@ class SongCreate extends Component {
   }
 }
 
-export default SongCreate;
+const mutation = gql`
+  mutation AddSong($title: String!) {
+    addSong(title: $title) {
+      id
+      title
+    }
+  }
+`;
+
+export default graphql(mutation)(withRouter(SongCreate));
