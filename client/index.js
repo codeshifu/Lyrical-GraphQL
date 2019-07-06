@@ -14,7 +14,7 @@ const Root = () => (
     <BrowserRouter history={hashHistory}>
       <div className="container">
         <Route path="/" exact component={SongList} />
-        <Route path="/song/new" component={SongCreate} />
+        <Route path="/songs/new" component={SongCreate} />
       </div>
     </BrowserRouter>
   </ApolloProvider>
